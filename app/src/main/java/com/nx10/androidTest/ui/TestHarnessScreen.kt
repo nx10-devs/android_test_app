@@ -51,6 +51,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import com.nx10.androidTest.BuildConfig
 import com.nx10.asparagus.AsparagusSdk
 import com.nx10.asparagus.SdkTelemetrySnapshot
 import com.nx10.asparagus.contract.Value
@@ -65,7 +66,7 @@ fun TestHarnessScreen(sdk: AsparagusSdk) {
     val snapshot by sdk.statusFlow.collectAsState()
     val uiScope = rememberCoroutineScope()
 
-    var apiKey by rememberSaveable { mutableStateOf("") }
+    var apiKey by rememberSaveable { mutableStateOf(BuildConfig.DEFAULT_API_KEY) }
     var demoSession by rememberSaveable { mutableStateOf(false) }
 
     var sensitivePaused by rememberSaveable { mutableStateOf(false) }

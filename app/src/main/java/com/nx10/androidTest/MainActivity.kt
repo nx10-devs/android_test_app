@@ -9,6 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import com.nx10.androidTest.ui.TestHarnessScreen
 import com.nx10.androidTest.ui.theme.NX10TestAppTheme
 import com.nx10.asparagus.AsparagusSdk
+import com.nx10.asparagus.SdkSessionState
 
 class MainActivity : ComponentActivity() {
     private lateinit var sdk: AsparagusSdk
@@ -16,6 +17,12 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sdk = AsparagusSdk.getOrCreate(applicationContext)
+        if (savedInstanceState == null &&
+            BuildConfig.DEFAULT_API_KEY.isNotBlank() &&
+            sdk.statusFlow.value.sessionState == SdkSessionState.IDLE
+        ) {
+            sdk.startSession(apiKey = BuildConfig.DEFAULT_API_KEY)
+        }
         enableEdgeToEdge()
         setContent {
             NX10TestAppTheme {

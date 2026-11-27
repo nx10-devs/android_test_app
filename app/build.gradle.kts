@@ -1,7 +1,25 @@
+import java.io.StringReader
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
 }
+
+val localPropsText = providers.fileContents(
+    rootProject.layout.projectDirectory.file("local.properties")
+).asText.orNull
+val localApiKey = localPropsText?.let { text ->
+    Properties().apply { load(StringReader(text)) }
+        .getProperty("ASPARAGUS_API_KEY")
+        ?.trim()
+}.orEmpty()
+val resolvedDefaultApiKey = localApiKey.ifEmpty {
+    providers.environmentVariable("ASPARAGUS_API_KEY").orNull?.trim().orEmpty()
+}
+val escapedDefaultApiKey = resolvedDefaultApiKey
+    .replace("\\", "\\\\")
+    .replace("\"", "\\\"")
 
 android {
     namespace = "com.nx10.androidTest"
@@ -17,6 +35,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "DEFAULT_API_KEY", "\"$escapedDefaultApiKey\"")
     }
 
     buildTypes {
@@ -32,6 +51,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 

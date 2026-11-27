@@ -21,6 +21,8 @@ This app declares `implementation("com.nx10:asparagus-sdk:0.2.0")`.
 
 ## Using the Test Harness
 
+- **Optional local default API key:** Add `ASPARAGUS_API_KEY=<your-key>` to git-ignored `local.properties` (or set the `ASPARAGUS_API_KEY` environment variable) before building to inject `BuildConfig.DEFAULT_API_KEY`, pre-fill the Deployment API Key field, and auto-start the session on launch without committing any secrets.
+
 1. Launch **NX10 Test App** on an Android device or emulator.
 2. In **1. Connection & Session**, paste your runtime **Deployment API Key** (never committed to Git).
 3. Leave **Use Production Endpoint** off to target **Stage** by default, or toggle it on for **Production**.
