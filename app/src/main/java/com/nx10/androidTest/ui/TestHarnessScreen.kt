@@ -255,6 +255,14 @@ fun TestHarnessScreen(sdk: AsparagusSdk) {
                     }) { Text("Finish Rewarded Ad") }
 
                     FilledTonalButton(onClick = {
+                        sdk.coreEvents.adStarted(type = "banner", placement = "harness_bottom")
+                    }) { Text("Start Banner Ad") }
+
+                    OutlinedButton(onClick = {
+                        sdk.coreEvents.adFinished(type = "banner", placement = "harness_bottom", completed = true)
+                    }) { Text("Finish Banner Ad") }
+
+                    FilledTonalButton(onClick = {
                         sdk.coreEvents.adRevenue(
                             type = "rewarded",
                             amount = 0.02,
@@ -326,6 +334,10 @@ fun TestHarnessScreen(sdk: AsparagusSdk) {
                     OutlinedButton(onClick = {
                         sdk.clearAttributes()
                     }) { Text("Clear State") }
+
+                    OutlinedButton(onClick = {
+                        sdk.setAttribute("nx10_reserved_test", Value.Flag(true))
+                    }) { Text("Try Reserved nx10_ Key") }
                 }
 
                 Spacer(Modifier.height(12.dp))
@@ -397,7 +409,12 @@ private fun LiveStatusCard(
         StatusRow("Source (Device) ID", snapshot.idSource.ifEmpty { "—" })
         StatusRow(
             "Settings / Window",
-            "${snapshot.settingsVersion.ifEmpty { "defaults" }} • ${snapshot.batchLengthS}s • gzip=${snapshot.compress}",
+            "${snapshot.settingsVersion.ifEmpty { "built-in" }} • ${snapshot.batchLengthS}s • gzip=${snapshot.compress}",
+        )
+        StatusRow("Device Share", snapshot.settingsLabel.ifEmpty { "—" })
+        StatusRow(
+            "Install History",
+            "sessions=${snapshot.historySessionsBefore} • collected=${snapshot.historyCollectedSecondsBefore}s • max=${snapshot.historyLongestSessionSecondsBefore}s",
         )
         StatusRow("Collection Enabled", "${snapshot.collectionEnabled} • nextSeq=${snapshot.nextSequence}")
         StatusRow("Hardware Sensors", "gyro=${snapshot.hasGyroscope} • mag=${snapshot.hasMagnetometer}")

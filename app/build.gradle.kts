@@ -36,7 +36,7 @@ android {
 }
 
 dependencies {
-    implementation("com.nx10:asparagus-sdk:0.1.0")
+    implementation("com.nx10:asparagus-sdk:0.2.0")
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.material3)
